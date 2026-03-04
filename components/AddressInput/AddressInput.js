@@ -1,27 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
-import styles from './AddressInput.module.css';
+import { useEffect, useRef, useState } from 'react';
 
-let mapsLoading = false;
-let mapsLoaded = false;
-
-function loadGoogleMaps() {
-  if (mapsLoaded || mapsLoading) return;
-  mapsLoading = true;
-  const script = document.createElement('script');
-  script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCDtN-QzZ8zcoKOhxQLD4HKcWEiY39Xqcs&libraries=places';
-  script.async = true;
-  script.onload = () => { mapsLoaded = true; };
-  script.onerror = () => { mapsLoading = false; };
-  document.head.appendChild(script);
-}
+const API_KEY = 'AIzaSyCDtN-QzZ8zcoKOhxQLD4HKcWEiY39Xqcs';
 
 function isDMVAddress(place) {
-  if (!place || !place.address_components) return true; // Allow if can't verify
+  if (!place || !place.address_components) return true;
   for (let i = 0; i < place.address_components.length; i++) {
     const comp = place.address_components[i];
-    if (comp.types.indexOf('administrative_area_level_1') !== -1) {
+    if (comp.types.includes('administrative_area_level_1')) {
       const state = comp.short_name.toUpperCase();
       return state === 'DC' || state === 'MD' || state === 'VA';
     }
@@ -40,48 +27,57 @@ export default function AddressInput({
 }) {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
-  const onChangeRef = useRef(onChange);
-  const onAddressSelectRef = useRef(onAddressSelect);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    onChangeRef.current = onChange;
-    onAddressSelectRef.current = onAddressSelect;
-  });
+    // Check if already loaded
+    if (window.google?.maps?.places) {
+      setIsLoaded(true);
+      initAutocomplete();
+      return;
+    }
 
-  const initAutocomplete = useCallback(() => {
-    if (typeof window === 'undefined' || !window.google?.maps?.places) return;
-    if (!inputRef.current || autocompleteRef.current) return;
-    const ac = new window.google.maps.places.Autocomplete(inputRef.current, {
-      types: ['address'],
+    // Load Google Places script
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&loading=async`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      setIsLoaded(true);
+      initAutocomplete();
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      if (autocompleteRef.current) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+    };
+  }, []);
+
+  function initAutocomplete() {
+    if (!inputRef.current || !window.google?.maps?.places) return;
+    if (autocompleteRef.current) return;
+
+    autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
       componentRestrictions: { country: 'us' },
+      types: ['address'],
+      fields: ['formatted_address', 'address_components'],
     });
-    ac.setFields(['formatted_address', 'address_components']);
-    ac.addListener('place_changed', () => {
-      const place = ac.getPlace();
+
+    autocompleteRef.current.addListener('place_changed', () => {
+      const place = autocompleteRef.current?.getPlace();
       if (place?.formatted_address) {
         if (!isDMVAddress(place)) {
           alert('Sorry, Express Homebuyers currently serves the DC, Maryland, and Virginia area only. Please enter a property address in the DMV region.');
-          if (onChangeRef.current) onChangeRef.current('');
+          if (onChange) onChange('');
           return;
         }
-        if (onChangeRef.current) onChangeRef.current(place.formatted_address);
-        if (onAddressSelectRef.current) onAddressSelectRef.current(place.formatted_address);
+        if (onChange) onChange(place.formatted_address);
+        if (onAddressSelect) onAddressSelect(place.formatted_address);
       }
     });
-    autocompleteRef.current = ac;
-  }, []);
-
-  useEffect(() => {
-    try { loadGoogleMaps(); } catch (e) { /* Google Maps not available */ }
-    const interval = setInterval(() => {
-      if (window.google?.maps?.places) {
-        initAutocomplete();
-        clearInterval(interval);
-      }
-    }, 500);
-    const timeout = setTimeout(() => clearInterval(interval), 10000);
-    return () => { clearInterval(interval); clearTimeout(timeout); };
-  }, [initAutocomplete]);
+  }
 
   return (
     <input
@@ -92,7 +88,7 @@ export default function AddressInput({
       value={value}
       onChange={(e) => onChange && onChange(e.target.value)}
       autoComplete="off"
-      className={inputClassName || className || styles.input}
+      className={inputClassName || className}
     />
   );
 }
