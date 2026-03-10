@@ -3,7 +3,7 @@
 import { useSurvey } from '@/context/SurveyContext';
 
 const cardStyle = { padding: '20px 16px', border: '2px solid #e9ecef', borderRadius: '12px', background: 'white', cursor: 'pointer', textAlign: 'center', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
-const backStyle = { background: 'none', border: 'none', color: '#2b5e8e', fontSize: '14px', cursor: 'pointer', marginBottom: '20px', fontWeight: 600, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
+const backStyle = { background: 'none', border: 'none', color: 'var(--accent)', fontSize: '14px', cursor: 'pointer', marginBottom: '20px', fontWeight: 600, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
 
 export default function ConditionStep() {
   const { selectOption, goBack } = useSurvey();
