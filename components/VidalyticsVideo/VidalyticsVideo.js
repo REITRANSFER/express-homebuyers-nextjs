@@ -2,10 +2,11 @@
 
 import { useEffect } from 'react';
 
-export default function VidalyticsVideo({ embedId = 'lSbVc1xhttQwdQWg', accountId = 'ovDx31Mm' }) {
+export default function VidalyticsVideo({ embedId = '', accountId = '' }) {
   const containerId = `vidalytics_embed_${embedId}`;
 
   useEffect(() => {
+    if (!embedId || !accountId) return;
     try {
       (function (v, i, d, a, l, y, t, c, s) {
         y = '_' + d.toLowerCase(); c = d + 'L';
@@ -26,6 +27,8 @@ export default function VidalyticsVideo({ embedId = 'lSbVc1xhttQwdQWg', accountI
       // Vidalytics not available
     }
   }, [containerId, accountId, embedId]);
+
+  if (!embedId || !accountId) return null;
 
   return (
     <div id={containerId} style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }} />
