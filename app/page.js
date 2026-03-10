@@ -6,6 +6,7 @@ import { SurveyCard } from '@/components/survey/survey-card';
 import { VSLSection } from '@/components/survey/vsl-section';
 import { FooterLinks } from '@/components/polar/footer-links';
 import { Phone } from 'lucide-react';
+import { PHONE, COMPANY_NAME } from '@/lib/config';
 
 function PageContent() {
   return (
@@ -14,12 +15,12 @@ function PageContent() {
       <div className="relative z-10">
         {/* Phone number at top */}
         <div className="flex items-center justify-center gap-2 bg-white py-4 shadow-sm">
-          <Phone className="h-5 w-5 text-[#0891b2]" />
+          <Phone className="h-5 w-5 text-[var(--accent)]" />
           <a
-            href="tel:8882984807"
-            className="text-lg font-semibold text-gray-900 hover:text-[#0891b2] transition-colors"
+            href={`tel:${PHONE.replace(/\D/g, '')}`}
+            className="text-lg font-semibold text-gray-900 hover:text-[var(--accent)] transition-colors"
           >
-            (888) 298-4807
+            {PHONE}
           </a>
         </div>
 
@@ -85,7 +86,7 @@ function PageContent() {
   );
 }
 
-export default function ExpressHomebuyersPage() {
+export default function SurveyPage() {
   return (
     <SurveyProvider config={pageConfigs.home}>
       <PageContent />
