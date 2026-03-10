@@ -6,15 +6,6 @@
   box-sizing: border-box;
 }
 
-:root {
-  --color-navy: #2b5e8e;
-  --color-dark-navy: #1a3d5f;
-  --color-teal: #16a085;
-  --color-dark-teal: #13876d;
-  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: Georgia, 'Times New Roman', serif;
-}
-
 body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
