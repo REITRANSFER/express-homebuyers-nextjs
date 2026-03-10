@@ -3,9 +3,9 @@
 import { useSurvey } from '@/context/SurveyContext';
 import { formatPrice } from '@/lib/validation';
 
-const backStyle = { background: 'none', border: 'none', color: '#2b5e8e', fontSize: '14px', cursor: 'pointer', marginBottom: '20px', fontWeight: 600, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
+const backStyle = { background: 'none', border: 'none', color: 'var(--accent)', fontSize: '14px', cursor: 'pointer', marginBottom: '20px', fontWeight: 600, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
 const inputStyle = { width: '100%', padding: '16px 20px 16px 40px', fontSize: '16px', border: '2px solid #e9ecef', borderRadius: '12px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
-const btnStyle = { width: '100%', padding: '18px', background: 'linear-gradient(135deg, #2b5e8e 0%, #1a3d5f 100%)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
+const btnStyle = { width: '100%', padding: '18px', background: 'var(--accent)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
 
 export default function PriceStep() {
   const { formData, setField, continueToNext, goBack } = useSurvey();
@@ -23,7 +23,7 @@ export default function PriceStep() {
       <button style={backStyle} onClick={goBack}>&#8592; Back</button>
       <h2>What&apos;s your asking price or estimated value?</h2>
       <div style={{ position: 'relative', marginBottom: '20px' }}>
-        <span style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', fontSize: '18px', fontWeight: 700, color: '#2b5e8e', pointerEvents: 'none' }}>$</span>
+        <span style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', fontSize: '18px', fontWeight: 700, color: 'var(--accent)', pointerEvents: 'none' }}>$</span>
         <input
           type="text"
           style={inputStyle}
