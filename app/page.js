@@ -20,55 +20,136 @@ function PageContent() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main style={{ background: '#f8fafc' }}>
       <StickyBar triggerElementId="hero-form" />
 
-      <section className="mx-auto max-w-3xl px-4 py-10 text-center">
-        <h1 className="text-4xl font-bold leading-tight text-gray-900 md:text-5xl text-balance">
-          Sell Your House Fast For Cash
-        </h1>
-        <p className="mt-4 text-lg text-gray-600">
-          Get a fair cash offer in 24 hours. No fees, no repairs, no hassle. We buy houses in any condition.
-        </p>
-
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-gray-700">
-          {['No Fees', 'No Repairs', 'Close Fast'].map(label => (
-            <div key={label} className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              {label}
+      {/* Hero */}
+      <section style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '60px 0',
+      }}>
+        <div style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          padding: '0 24px',
+          width: '100%',
+        }}>
+          {/* Video (optional) */}
+          {VIDALYTICS_EMBED_ID && (
+            <div style={{ maxWidth: '720px', margin: '0 auto 40px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
+              <VidalyticsVideo embedId={VIDALYTICS_EMBED_ID} accountId={VIDALYTICS_ACCOUNT_ID} />
             </div>
-          ))}
-        </div>
+          )}
 
-        {VIDALYTICS_EMBED_ID && (
-          <div className="mt-8 overflow-hidden rounded-xl bg-black shadow-2xl">
-            <VidalyticsVideo embedId={VIDALYTICS_EMBED_ID} accountId={VIDALYTICS_ACCOUNT_ID} />
+          {/* Headline */}
+          <h1 style={{
+            fontSize: 'clamp(32px, 5vw, 56px)',
+            fontWeight: 800,
+            lineHeight: 1.15,
+            color: '#0f172a',
+            textAlign: 'center',
+            marginBottom: '16px',
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          }}>
+            Sell Your House Fast&nbsp;For Cash
+          </h1>
+
+          {/* Subheadline */}
+          <p style={{
+            fontSize: 'clamp(17px, 2.5vw, 22px)',
+            color: '#475569',
+            textAlign: 'center',
+            marginBottom: '28px',
+            lineHeight: 1.6,
+            maxWidth: '640px',
+            margin: '0 auto 28px',
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          }}>
+            Get a fair cash offer in 24 hours. No fees, no repairs, no hassle.
+          </p>
+
+          {/* Benefits row */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '12px 28px',
+            marginBottom: '36px',
+          }}>
+            {['No Fees or Commissions', 'No Repairs Needed', 'Close In As Little As 7 Days'].map(label => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '15px', fontWeight: 600, color: '#334155' }}>
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="10" fill="var(--accent)" fillOpacity="0.15" />
+                  <path d="M6 10l3 3 5-5" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {label}
+              </div>
+            ))}
           </div>
-        )}
 
-        <div id="hero-form" className="mt-8 rounded-xl bg-white p-6 shadow-md text-left">
-          <p className="mb-3 font-semibold text-gray-800">What&apos;s the property address?</p>
-          <AddressInput
-            id="mainAddress"
-            placeholder="123 Main St, City, State"
-            value={address}
-            onChange={setAddress}
-            onAddressSelect={handleAddressSelect}
-          />
-          <button
-            className="mt-4 w-full rounded-xl py-4 text-lg font-semibold text-white transition hover:opacity-90"
-            style={{ background: 'var(--accent)' }}
-            onClick={() => address.trim() ? openSurvey(address) : openSurvey()}
-          >
-            Get My Offer &rarr;
-          </button>
-          <p className="mt-3 text-xs text-gray-500 text-center">No obligation. No fees. Response within 24 hours.</p>
+          {/* Lead form card */}
+          <div id="hero-form" style={{
+            maxWidth: '560px',
+            margin: '0 auto',
+            background: 'white',
+            borderRadius: '16px',
+            padding: '32px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+          }}>
+            <p style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+              fontSize: '16px',
+              fontWeight: 700,
+              color: '#0f172a',
+              marginBottom: '12px',
+            }}>
+              Enter your property address to get started:
+            </p>
+            <AddressInput
+              id="mainAddress"
+              placeholder="123 Main St, City, State"
+              value={address}
+              onChange={setAddress}
+              onAddressSelect={handleAddressSelect}
+            />
+            <button
+              onClick={() => address.trim() ? openSurvey(address) : openSurvey()}
+              style={{
+                marginTop: '12px',
+                width: '100%',
+                padding: '18px',
+                background: 'var(--accent)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '18px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                transition: 'opacity 0.2s',
+              }}
+              onMouseOver={e => e.currentTarget.style.opacity = '0.9'}
+              onMouseOut={e => e.currentTarget.style.opacity = '1'}
+            >
+              Get My Cash Offer &rarr;
+            </button>
+            <p style={{
+              marginTop: '10px',
+              fontSize: '12px',
+              color: '#94a3b8',
+              textAlign: 'center',
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            }}>
+              No obligation &bull; No fees &bull; Response within 24 hours
+            </p>
+          </div>
         </div>
       </section>
 
-      <div className="py-8">
+      <div style={{ paddingBottom: '32px' }}>
         <FooterLinks />
       </div>
 
