@@ -33,7 +33,7 @@ export default function AddressStep() {
         onChange={(v) => setField('address', v)}
         onAddressSelect={handleAddressSelect}
       />
-      <button className="continue-button" onClick={handleContinue} style={{ width: '100%', padding: '18px', background: 'linear-gradient(135deg, #2b5e8e 0%, #1a3d5f 100%)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', marginTop: '16px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+      <button className="continue-button" onClick={handleContinue} style={{ width: '100%', padding: '18px', background: 'var(--accent)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', marginTop: '16px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
         Get My Offer &#8594;
       </button>
     </>
