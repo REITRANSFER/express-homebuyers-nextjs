@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-import { COMPANY_NAME, VIDALYTICS_EMBED_ID } from '@/lib/config';
+import { COMPANY_NAME, VIDALYTICS_EMBED_ID, VIDALYTICS_ACCOUNT_ID } from '@/lib/config';
 
 export function VSLSection() {
   useEffect(() => {
-    if (!VIDALYTICS_EMBED_ID) return;
+    if (!VIDALYTICS_EMBED_ID || !VIDALYTICS_ACCOUNT_ID) return;
     try {
       (function (v, i, d, a, l, y, t, c, s) {
         y = '_' + d.toLowerCase(); c = d + 'L';
@@ -21,13 +21,13 @@ export function VSLSection() {
           };
         }
         vsl(l + 'loader.min.js', function () { if (!vli) { var vlc = v[c][vl]; vli = new vlc(); } vli.loadScript(l + 'player.min.js', function () { var vec = v[d][ve]; t = new vec(); t.run(a); }); });
-      })(window, document, 'Vidalytics', VIDALYTICS_EMBED_ID, 'https://fast.vidalytics.com/embeds/ovDx31Mm/' + VIDALYTICS_EMBED_ID + '/');
+      })(window, document, 'Vidalytics', VIDALYTICS_EMBED_ID, 'https://fast.vidalytics.com/embeds/' + VIDALYTICS_ACCOUNT_ID + '/' + VIDALYTICS_EMBED_ID + '/');
     } catch (e) {
       // Vidalytics not available
     }
   }, []);
 
-  if (!VIDALYTICS_EMBED_ID) return null;
+  if (!VIDALYTICS_EMBED_ID || !VIDALYTICS_ACCOUNT_ID) return null;
 
   return (
     <div className="w-full max-w-3xl">
