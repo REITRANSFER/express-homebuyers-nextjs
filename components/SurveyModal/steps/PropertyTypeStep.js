@@ -3,7 +3,7 @@
 import { useSurvey } from '@/context/SurveyContext';
 
 const buttonStyle = { padding: '20px 24px', border: '2px solid #e9ecef', borderRadius: '12px', background: 'white', fontSize: '16px', fontWeight: 500, color: '#1a1a1a', cursor: 'pointer', textAlign: 'left', width: '100%', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
-const backStyle = { background: 'none', border: 'none', color: '#2b5e8e', fontSize: '14px', cursor: 'pointer', marginBottom: '20px', fontWeight: 600, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
+const backStyle = { background: 'none', border: 'none', color: 'var(--accent)', fontSize: '14px', cursor: 'pointer', marginBottom: '20px', fontWeight: 600, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" };
 
 export default function PropertyTypeStep() {
   const { selectOption, disqualify, goBack } = useSurvey();
