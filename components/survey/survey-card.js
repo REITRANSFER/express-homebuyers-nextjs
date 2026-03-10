@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSurvey } from '@/context/SurveyContext';
 import AddressInput from '@/components/AddressInput/AddressInput';
 import { formatPrice, formatPhone, validatePhone, validateEmail } from '@/lib/validation';
+import { PHONE } from '@/lib/config';
 
 const steps = ['address', 'propertyType', 'condition', 'price', 'timeline', 'reason', 'listed', 'contact'];
 
@@ -54,7 +55,9 @@ export function SurveyCard() {
         <div className="text-6xl mb-4">&#128222;</div>
         <h3 className="text-xl font-bold text-gray-900 mb-3">We may still be able to help.</h3>
         <p className="text-gray-600">Our team specializes in unique situations. Call us directly and we&apos;ll tell you honestly what your options are.</p>
-        <p className="mt-4 text-lg font-bold text-gray-900">(888) 298-4807</p>
+        <p className="mt-4 text-lg font-bold text-gray-900">
+          <a href={`tel:${PHONE.replace(/\D/g, '')}`} className="hover:underline">{PHONE}</a>
+        </p>
       </div>
     );
   }
@@ -68,7 +71,7 @@ export function SurveyCard() {
           <span>{Math.round(progressPct)}%</span>
         </div>
         <div className="h-1.5 rounded-full bg-gray-200">
-          <div className="h-full rounded-full bg-[#0891b2] transition-all duration-300" style={{ width: `${progressPct}%` }} />
+          <div className="h-full rounded-full bg-[var(--accent)] transition-all duration-300" style={{ width: `${progressPct}%` }} />
         </div>
       </div>
 
@@ -83,10 +86,10 @@ export function SurveyCard() {
             value={formData.address || ''}
             onChange={(v) => setField('address', v)}
             onAddressSelect={handleAddressSelect}
-            inputClassName="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[#0891b2] focus:outline-none"
+            inputClassName="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[var(--accent)] focus:outline-none"
           />
           <button onClick={() => { if (formData.address?.trim()) next(); else alert('Please enter your property address.'); }}
-            className="mt-4 w-full rounded-lg bg-[#0891b2] py-3.5 text-base font-semibold text-white transition hover:bg-[#0e7490]">
+            className="mt-4 w-full rounded-lg bg-[var(--accent)] py-3.5 text-base font-semibold text-white transition hover:opacity-90">
             Get My Offer &#8594;
           </button>
         </div>
@@ -95,7 +98,7 @@ export function SurveyCard() {
       {/* Step: Property Type */}
       {currentStep === 'propertyType' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">What type of property is it?</h2>
           <div className="flex flex-col gap-3">
             {[
@@ -104,7 +107,7 @@ export function SurveyCard() {
               { emoji: '&#127970;', label: 'Condo or Townhouse', value: 'Condo/Townhouse' },
             ].map(opt => (
               <button key={opt.value} onClick={() => handleSelect('propertyType', opt.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[#0891b2] hover:bg-cyan-50"
+                className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[var(--accent)] hover:bg-gray-50"
                 dangerouslySetInnerHTML={{ __html: `${opt.emoji} ${opt.label}` }} />
             ))}
             <button onClick={() => handleDisqualify('propertyType', 'Land/Commercial/Mobile')}
@@ -118,7 +121,7 @@ export function SurveyCard() {
       {/* Step: Condition */}
       {currentStep === 'condition' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">What&apos;s the condition of the home?</h2>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -128,7 +131,7 @@ export function SurveyCard() {
               { emoji: '&#9888;&#65039;', label: 'Severe Damage', sub: 'Fire, flood, or structural', value: 'Severe damage' },
             ].map(opt => (
               <button key={opt.value} onClick={() => handleSelect('condition', opt.value)}
-                className="rounded-lg border-2 border-gray-200 p-4 text-center transition hover:border-[#0891b2] hover:bg-cyan-50">
+                className="rounded-lg border-2 border-gray-200 p-4 text-center transition hover:border-[var(--accent)] hover:bg-gray-50">
                 <div className="text-3xl mb-1" dangerouslySetInnerHTML={{ __html: opt.emoji }} />
                 <div className="text-sm font-bold text-gray-900">{opt.label}</div>
                 <div className="text-xs text-gray-500 mt-1">{opt.sub}</div>
@@ -141,16 +144,16 @@ export function SurveyCard() {
       {/* Step: Price */}
       {currentStep === 'price' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">What&apos;s your asking price or estimated value?</h2>
           <div className="relative mb-4">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-[#0891b2]">$</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-[var(--accent)]">$</span>
             <input type="text" placeholder="300,000" inputMode="numeric" value={formData.askingPrice || ''}
               onChange={(e) => setField('askingPrice', formatPrice(e.target.value))}
-              className="w-full rounded-lg border-2 border-gray-200 py-3 pl-10 pr-4 text-base focus:border-[#0891b2] focus:outline-none" />
+              className="w-full rounded-lg border-2 border-gray-200 py-3 pl-10 pr-4 text-base focus:border-[var(--accent)] focus:outline-none" />
           </div>
           <button onClick={() => { if (formData.askingPrice?.trim()) next(); else alert('Please enter a price.'); }}
-            className="w-full rounded-lg bg-[#0891b2] py-3.5 text-base font-semibold text-white transition hover:bg-[#0e7490]">
+            className="w-full rounded-lg bg-[var(--accent)] py-3.5 text-base font-semibold text-white transition hover:opacity-90">
             Continue &#8594;
           </button>
         </div>
@@ -159,7 +162,7 @@ export function SurveyCard() {
       {/* Step: Timeline */}
       {currentStep === 'timeline' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">When do you need to close?</h2>
           <div className="flex flex-col gap-3">
             {[
@@ -170,7 +173,7 @@ export function SurveyCard() {
               { emoji: '&#128336;', label: 'No rush - just exploring' },
             ].map(opt => (
               <button key={opt.label} onClick={() => handleSelect('timeline', opt.label)}
-                className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[#0891b2] hover:bg-cyan-50"
+                className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[var(--accent)] hover:bg-gray-50"
                 dangerouslySetInnerHTML={{ __html: `${opt.emoji} ${opt.label}` }} />
             ))}
           </div>
@@ -180,12 +183,12 @@ export function SurveyCard() {
       {/* Step: Reason */}
       {currentStep === 'reason' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">What&apos;s your primary reason for selling?</h2>
           <div className="flex flex-col gap-3">
             {reasonOptions.map(opt => (
               <button key={opt.value} onClick={() => handleSelect('reason', opt.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[#0891b2] hover:bg-cyan-50">
+                className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[var(--accent)] hover:bg-gray-50">
                 {opt.emoji} {opt.label}
               </button>
             ))}
@@ -196,12 +199,12 @@ export function SurveyCard() {
       {/* Step: Listed */}
       {currentStep === 'listed' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">Is the property currently listed for sale?</h2>
           <p className="text-sm text-gray-500 mb-4">Includes MLS, agent listings, and FSBO on Zillow or Realtor.com.</p>
           <div className="flex flex-col gap-3">
             <button onClick={() => handleSelect('listed', 'No - not listed')}
-              className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[#0891b2] hover:bg-cyan-50">
+              className="w-full rounded-lg border-2 border-gray-200 px-4 py-4 text-left text-base font-medium text-gray-900 transition hover:border-[var(--accent)] hover:bg-gray-50">
               &#10003; No - not currently listed anywhere
             </button>
             <button onClick={() => handleDisqualify('listed', 'Listed with agent')}
@@ -219,23 +222,23 @@ export function SurveyCard() {
       {/* Step: Contact */}
       {currentStep === 'contact' && (
         <div>
-          <button onClick={back} className="mb-3 text-sm font-semibold text-[#0891b2] hover:underline">&#8592; Back</button>
+          <button onClick={back} className="mb-3 text-sm font-semibold text-[var(--accent)] hover:underline">&#8592; Back</button>
           <h2 className="text-xl font-bold text-gray-900 mb-4">Where should we send your cash offer?</h2>
           <div className="grid grid-cols-2 gap-3 mb-3">
             <input type="text" placeholder="First name" value={firstName} onChange={(e) => setFirstName(e.target.value)}
-              className="rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[#0891b2] focus:outline-none" />
+              className="rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[var(--accent)] focus:outline-none" />
             <input type="text" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)}
-              className="rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[#0891b2] focus:outline-none" />
+              className="rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[var(--accent)] focus:outline-none" />
           </div>
           <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)}
-            className="mb-3 w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[#0891b2] focus:outline-none" />
-          <input type="tel" placeholder="+1 (301) 000-0000" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))}
-            className="mb-4 w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[#0891b2] focus:outline-none" />
+            className="mb-3 w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[var(--accent)] focus:outline-none" />
+          <input type="tel" placeholder="(555) 000-0000" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))}
+            className="mb-4 w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-[var(--accent)] focus:outline-none" />
           <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)}
             className="absolute -left-[9999px] -top-[9999px] h-0 w-0 opacity-0" tabIndex={-1} autoComplete="off" />
           <button onClick={handleSubmit} disabled={status === 'submitting'}
-            className="w-full rounded-lg bg-[#0891b2] py-3.5 text-base font-semibold text-white transition hover:bg-[#0e7490] disabled:opacity-60">
-            {status === 'submitting' ? 'Submitting...' : 'Get My Cash Offer \u2192'}
+            className="w-full rounded-lg bg-[var(--accent)] py-3.5 text-base font-semibold text-white transition hover:opacity-90 disabled:opacity-60">
+            {status === 'submitting' ? 'Submitting...' : 'Get My Cash Offer →'}
           </button>
         </div>
       )}
