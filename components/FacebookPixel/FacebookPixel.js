@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
+import { FB_PIXEL_ID } from '@/lib/config';
 
 export default function FacebookPixel() {
+  // Do not render anything if no pixel ID is configured
+  if (!FB_PIXEL_ID) return null;
+
   useEffect(() => {
     try {
       !function(f,b,e,v,n,t,s)
@@ -13,12 +17,22 @@ export default function FacebookPixel() {
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      window.fbq('init', '1894196130815635');
+      window.fbq('init', FB_PIXEL_ID);
       window.fbq('track', 'PageView');
     } catch (e) {
       // Silently fail if FB pixel can't load
     }
   }, []);
 
-  return null;
+  return (
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style={{ display: 'none' }}
+        src={`https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`}
+        alt=""
+      />
+    </noscript>
+  );
 }
