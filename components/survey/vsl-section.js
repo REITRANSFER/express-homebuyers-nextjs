@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
+import { COMPANY_NAME, VIDALYTICS_EMBED_ID } from '@/lib/config';
 
 export function VSLSection() {
   useEffect(() => {
+    if (!VIDALYTICS_EMBED_ID) return;
     try {
       (function (v, i, d, a, l, y, t, c, s) {
         y = '_' + d.toLowerCase(); c = d + 'L';
@@ -19,19 +21,21 @@ export function VSLSection() {
           };
         }
         vsl(l + 'loader.min.js', function () { if (!vli) { var vlc = v[c][vl]; vli = new vlc(); } vli.loadScript(l + 'player.min.js', function () { var vec = v[d][ve]; t = new vec(); t.run(a); }); });
-      })(window, document, 'Vidalytics', 'vidalytics_embed_lSbVc1xhttQwdQWg', 'https://fast.vidalytics.com/embeds/ovDx31Mm/lSbVc1xhttQwdQWg/');
+      })(window, document, 'Vidalytics', VIDALYTICS_EMBED_ID, 'https://fast.vidalytics.com/embeds/ovDx31Mm/' + VIDALYTICS_EMBED_ID + '/');
     } catch (e) {
       // Vidalytics not available
     }
   }, []);
 
+  if (!VIDALYTICS_EMBED_ID) return null;
+
   return (
     <div className="w-full max-w-3xl">
       <div className="overflow-hidden rounded-xl bg-black shadow-2xl">
-        <div id="vidalytics_embed_lSbVc1xhttQwdQWg" style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }} />
+        <div id={VIDALYTICS_EMBED_ID} style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }} />
       </div>
       <p className="mt-3 text-center text-sm text-gray-500">
-        &#9654; Watch: Brad Chandler explains how Express Homebuyers works
+        &#9654; Watch: See how {COMPANY_NAME} can help you sell fast
       </p>
     </div>
   );
