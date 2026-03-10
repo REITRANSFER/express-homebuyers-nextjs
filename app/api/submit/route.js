@@ -4,7 +4,7 @@
 
 export async function POST(request) {
   const webhookUrl = process.env.WEBHOOK_URL;
-  if (\!webhookUrl) {
+  if (!webhookUrl) {
     return Response.json({ error: 'Webhook not configured' }, { status: 500 });
   }
   try {
