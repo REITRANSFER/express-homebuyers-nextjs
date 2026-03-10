@@ -1,6 +1,6 @@
 // app/api/submit/route.js
 // Next.js App Router Route Handler
-// Reads WEBHOOK_URL server-side and proxies form data — never expose webhook URL to browser.
+// Reads WEBHOOK_URL server-side and proxies form data -- never expose webhook URL to browser.
 
 export async function POST(request) {
   const webhookUrl = process.env.WEBHOOK_URL;
