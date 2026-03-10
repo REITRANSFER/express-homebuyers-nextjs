@@ -1,19 +1,25 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import {
+  GOOGLE_PLACES_API_KEY,
+  SERVICE_AREAS,
+  LOCATION_BIAS_LAT,
+  LOCATION_BIAS_LNG,
+} from '@/lib/config';
 
-const API_KEY = 'AIzaSyCDtN-QzZ8zcoKOhxQLD4HKcWEiY39Xqcs';
-
-function isDMVAddress(place) {
-  if (!place || !place.address_components) return true;
+function isInServiceArea(place) {
+  // If no service areas configured, accept all addresses
+  if (!SERVICE_AREAS || SERVICE_AREAS.length === 0) return true;
+  if (!place || !place.address_components) return false;
   for (let i = 0; i < place.address_components.length; i++) {
     const comp = place.address_components[i];
     if (comp.types.includes('administrative_area_level_1')) {
       const state = comp.short_name.toUpperCase();
-      return state === 'DC' || state === 'MD' || state === 'VA';
+      return SERVICE_AREAS.includes(state);
     }
   }
-  return true;
+  return false;
 }
 
 export default function AddressInput({
@@ -30,6 +36,9 @@ export default function AddressInput({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // Only load Google Places if API key is configured
+    if (!GOOGLE_PLACES_API_KEY) return;
+
     // Check if already loaded
     if (window.google?.maps?.places) {
       setIsLoaded(true);
@@ -39,7 +48,7 @@ export default function AddressInput({
 
     // Load Google Places script
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES_API_KEY}&libraries=places`;
     script.async = true;
     script.defer = true;
     script.onload = () => {
@@ -59,17 +68,27 @@ export default function AddressInput({
     if (!inputRef.current || !window.google?.maps?.places) return;
     if (autocompleteRef.current) return;
 
-    autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
+    const options = {
       componentRestrictions: { country: 'us' },
       types: ['address'],
       fields: ['formatted_address', 'address_components'],
-    });
+    };
+
+    // Apply location bias if coordinates are configured
+    if (LOCATION_BIAS_LAT && LOCATION_BIAS_LNG) {
+      options.locationBias = new google.maps.Circle({
+        center: { lat: LOCATION_BIAS_LAT, lng: LOCATION_BIAS_LNG },
+        radius: 80000,
+      });
+    }
+
+    autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, options);
 
     autocompleteRef.current.addListener('place_changed', () => {
       const place = autocompleteRef.current?.getPlace();
       if (place?.formatted_address) {
-        if (!isDMVAddress(place)) {
-          alert('Sorry, Express Homebuyers currently serves the DC, Maryland, and Virginia area only. Please enter a property address in the DMV region.');
+        if (SERVICE_AREAS.length > 0 && !isInServiceArea(place)) {
+          alert(`Sorry, we currently only serve ${SERVICE_AREAS.join(', ')}. Please enter a property address in our service area.`);
           if (onChange) onChange('');
           return;
         }
