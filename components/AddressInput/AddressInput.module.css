@@ -10,6 +10,5 @@
 
 .input:focus {
   outline: none;
-  border-color: #2b5e8e;
-  background: #f8f9ff;
+  border-color: var(--accent);
 }
