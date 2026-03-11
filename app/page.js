@@ -22,39 +22,46 @@ function parseTrustStats(raw) {
   return raw.split('|').map(s => s.trim()).filter(Boolean);
 }
 
+const font = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
 /* ── page ────────────────────────────────────────────── */
 function PageContent() {
   const stats = parseTrustStats(TRUST_STATS);
 
   return (
-    <main style={{ background: '#f8fafc' }}>
+    <main style={{ background: '#f1f5f9', minHeight: '100vh' }}>
       {/* Sticky bar (appears on scroll past survey card) */}
       <StickyBar triggerElementId="survey-card" />
 
       {/* ── Hero ──────────────────────────────────── */}
-      <section style={{ padding: '48px 0 64px', textAlign: 'center' }}>
-        <div style={{ maxWidth: '960px', margin: '0 auto', padding: '0 24px' }}>
+      <section style={{
+        padding: '52px 0 72px',
+        textAlign: 'center',
+        background: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)',
+      }}>
+        <div style={{ maxWidth: '960px', margin: '0 auto', padding: '0 20px' }}>
 
           {/* Headline */}
           <h1 style={{
-            fontSize: 'clamp(28px, 5vw, 52px)',
+            fontSize: 'clamp(28px, 5vw, 48px)',
             fontWeight: 800,
-            lineHeight: 1.15,
+            lineHeight: 1.12,
             color: '#0f172a',
-            marginBottom: '20px',
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            marginBottom: '16px',
+            fontFamily: font,
+            letterSpacing: '-0.02em',
           }}>
             Sell Your House Fast For Cash
           </h1>
 
           {/* Subheadline with accent */}
           <p style={{
-            fontSize: 'clamp(18px, 3vw, 26px)',
+            fontSize: 'clamp(18px, 3vw, 24px)',
             fontWeight: 700,
             color: '#0f172a',
             lineHeight: 1.35,
             marginBottom: '16px',
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            fontFamily: font,
           }}>
             No Fees. No Repairs.{' '}
             <span style={{ color: 'var(--accent)' }}>Cash in 14 Days.</span>
@@ -62,12 +69,12 @@ function PageContent() {
 
           {/* Description */}
           <p style={{
-            fontSize: 'clamp(15px, 2vw, 18px)',
-            color: '#475569',
-            maxWidth: '640px',
-            margin: '0 auto 28px',
-            lineHeight: 1.6,
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            fontSize: 'clamp(15px, 2vw, 17px)',
+            color: '#64748b',
+            maxWidth: '560px',
+            margin: '0 auto 32px',
+            lineHeight: 1.65,
+            fontFamily: font,
           }}>
             We handle the paperwork, the timeline, and the stress.
             You pick the closing date and walk away with a check.
@@ -78,7 +85,7 @@ function PageContent() {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            gap: '12px 28px',
+            gap: '10px 24px',
             marginBottom: '40px',
           }}>
             {(stats || ['No Fees or Commissions', 'No Repairs Needed', 'Cash Offer in 24 Hours']).map((label, i) => (
@@ -86,10 +93,10 @@ function PageContent() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                fontSize: '15px',
+                fontSize: '14px',
                 fontWeight: 600,
-                color: '#334155',
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                color: '#475569',
+                fontFamily: font,
               }}>
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                   <circle cx="10" cy="10" r="10" fill="var(--accent)" fillOpacity="0.15" />
@@ -101,7 +108,7 @@ function PageContent() {
           </div>
 
           {/* ── Inline Survey Card ────────────────── */}
-          <div id="survey-card" style={{ maxWidth: '640px', margin: '0 auto' }}>
+          <div id="survey-card" style={{ maxWidth: '560px', margin: '0 auto' }}>
             <SurveyCard />
           </div>
 
