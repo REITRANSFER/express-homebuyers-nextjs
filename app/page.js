@@ -1,151 +1,155 @@
 'use client';
 
-import { useState } from 'react';
-import { SurveyProvider, useSurvey } from '@/context/SurveyContext';
+import { SurveyProvider } from '@/context/SurveyContext';
 import { pageConfigs } from '@/lib/surveyConfig';
-import SurveyModal from '@/components/SurveyModal/SurveyModal';
+import { SurveyCard } from '@/components/survey/survey-card';
+import { VSLSection } from '@/components/survey/vsl-section';
 import StickyBar from '@/components/StickyBar/StickyBar';
-import VidalyticsVideo from '@/components/VidalyticsVideo/VidalyticsVideo';
-import AddressInput from '@/components/AddressInput/AddressInput';
+import SurveyModal from '@/components/SurveyModal/SurveyModal';
 import { FooterLinks } from '@/components/polar/footer-links';
-import { VIDALYTICS_EMBED_ID, VIDALYTICS_ACCOUNT_ID } from '@/lib/config';
+import {
+  COMPANY_NAME,
+  PHONE,
+  TRUST_STATS,
+  VIDALYTICS_EMBED_ID,
+} from '@/lib/config';
 
+/* ── helpers ─────────────────────────────────────────── */
+function parseTrustStats(raw) {
+  if (!raw) return null;
+  try {
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr) && arr.length) return arr;
+  } catch { /* fall through */ }
+  return raw.split('|').map(s => s.trim()).filter(Boolean);
+}
+
+/* ── page ────────────────────────────────────────────── */
 function PageContent() {
-  const { openSurvey } = useSurvey();
-  const [address, setAddress] = useState('');
-
-  function handleAddressSelect(addr) {
-    setAddress(addr);
-    setTimeout(() => openSurvey(addr), 200);
-  }
+  const stats = parseTrustStats(TRUST_STATS);
+  const showPhone = PHONE && PHONE !== '[Phone Number]';
 
   return (
     <main style={{ background: '#f8fafc' }}>
-      <StickyBar triggerElementId="hero-form" />
+      {/* ── Phone bar ─────────────────────────────── */}
+      {showPhone && (
+        <div style={{
+          background: '#111827',
+          padding: '10px 16px',
+          textAlign: 'center',
+        }}>
+          <a
+            href={`tel:${PHONE.replace(/\D/g, '')}`}
+            style={{
+              color: 'white',
+              fontWeight: 600,
+              fontSize: '15px',
+              textDecoration: 'none',
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            {PHONE}
+          </a>
+        </div>
+      )}
 
-      {/* Hero */}
+      {/* ── Sticky bar (on scroll) ────────────────── */}
+      <StickyBar triggerElementId="survey-card" />
+
+      {/* ── Hero ──────────────────────────────────── */}
       <section style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '60px 0',
+        padding: '48px 0 64px',
+        textAlign: 'center',
       }}>
         <div style={{
-          maxWidth: '1100px',
+          maxWidth: '960px',
           margin: '0 auto',
           padding: '0 24px',
-          width: '100%',
         }}>
-          {/* Video (optional) */}
-          {VIDALYTICS_EMBED_ID && (
-            <div style={{ maxWidth: '720px', margin: '0 auto 40px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
-              <VidalyticsVideo embedId={VIDALYTICS_EMBED_ID} accountId={VIDALYTICS_ACCOUNT_ID} />
-            </div>
-          )}
-
           {/* Headline */}
           <h1 style={{
-            fontSize: 'clamp(32px, 5vw, 56px)',
+            fontSize: 'clamp(28px, 5vw, 52px)',
             fontWeight: 800,
             lineHeight: 1.15,
             color: '#0f172a',
-            textAlign: 'center',
+            marginBottom: '20px',
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          }}>
+            Sell Your House Fast For Cash
+          </h1>
+
+          {/* Subheadline with accent */}
+          <p style={{
+            fontSize: 'clamp(18px, 3vw, 26px)',
+            fontWeight: 700,
+            color: '#0f172a',
+            lineHeight: 1.35,
             marginBottom: '16px',
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
           }}>
-            Sell Your House Fast&nbsp;For Cash
-          </h1>
-
-          {/* Subheadline */}
-          <p style={{
-            fontSize: 'clamp(17px, 2.5vw, 22px)',
-            color: '#475569',
-            textAlign: 'center',
-            marginBottom: '28px',
-            lineHeight: 1.6,
-            maxWidth: '640px',
-            margin: '0 auto 28px',
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-          }}>
-            Get a fair cash offer in 24 hours. No fees, no repairs, no hassle.
+            No Fees. No Repairs.{' '}
+            <span style={{ color: 'var(--accent)' }}>Cash in 14 Days.</span>
           </p>
 
-          {/* Benefits row */}
+          {/* Description */}
+          <p style={{
+            fontSize: 'clamp(15px, 2vw, 18px)',
+            color: '#475569',
+            maxWidth: '640px',
+            margin: '0 auto 28px',
+            lineHeight: 1.6,
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          }}>
+            We handle the paperwork, the timeline, and the stress. You pick the closing date and walk away with a check.
+          </p>
+
+          {/* Trust stats / benefits row */}
           <div style={{
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
             gap: '12px 28px',
-            marginBottom: '36px',
+            marginBottom: '40px',
           }}>
-            {['No Fees or Commissions', 'No Repairs Needed', 'Close In As Little As 7 Days'].map(label => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '15px', fontWeight: 600, color: '#334155' }}>
+            {(stats || ['No Fees or Commissions', 'No Repairs Needed', 'Cash Offer in 24 Hours']).map((label, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '15px',
+                fontWeight: 600,
+                color: '#334155',
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+              }}>
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                   <circle cx="10" cy="10" r="10" fill="var(--accent)" fillOpacity="0.15" />
                   <path d="M6 10l3 3 5-5" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                {label}
+                {typeof label === 'string' ? label : (label.label || label.value || String(label))}
               </div>
             ))}
           </div>
 
-          {/* Lead form card */}
-          <div id="hero-form" style={{
-            maxWidth: '560px',
+          {/* ── Inline Survey Card ────────────────── */}
+          <div id="survey-card" style={{
+            maxWidth: '640px',
             margin: '0 auto',
-            background: 'white',
-            borderRadius: '16px',
-            padding: '32px',
-            boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
           }}>
-            <p style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-              fontSize: '16px',
-              fontWeight: 700,
-              color: '#0f172a',
-              marginBottom: '12px',
-            }}>
-              Enter your property address to get started:
-            </p>
-            <AddressInput
-              id="mainAddress"
-              placeholder="123 Main St, City, State"
-              value={address}
-              onChange={setAddress}
-              onAddressSelect={handleAddressSelect}
-            />
-            <button
-              onClick={() => address.trim() ? openSurvey(address) : openSurvey()}
-              style={{
-                marginTop: '12px',
-                width: '100%',
-                padding: '18px',
-                background: 'var(--accent)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '18px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                transition: 'opacity 0.2s',
-              }}
-              onMouseOver={e => e.currentTarget.style.opacity = '0.9'}
-              onMouseOut={e => e.currentTarget.style.opacity = '1'}
-            >
-              Get My Cash Offer &rarr;
-            </button>
-            <p style={{
-              marginTop: '10px',
-              fontSize: '12px',
-              color: '#94a3b8',
-              textAlign: 'center',
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-            }}>
-              No obligation &bull; No fees &bull; Response within 24 hours
-            </p>
+            <SurveyCard />
           </div>
+
+          {/* VSL section (only if configured) */}
+          {VIDALYTICS_EMBED_ID && (
+            <div style={{ maxWidth: '720px', margin: '48px auto 0' }}>
+              <VSLSection />
+            </div>
+          )}
         </div>
       </section>
 
@@ -153,6 +157,7 @@ function PageContent() {
         <FooterLinks />
       </div>
 
+      {/* Keep modal as fallback for StickyBar address entry */}
       <SurveyModal />
     </main>
   );
