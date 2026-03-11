@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,6 +11,7 @@
 body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
@@ -18,4 +21,32 @@ img {
 
 a {
   color: inherit;
+}
+
+/* Make inputs consistent across browsers */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+input::placeholder {
+  color: #9ca3af;
+}
+
+/* Custom scrollbar for survey modal */
+.survey-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.survey-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+.survey-scrollbar::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+.survey-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
