@@ -7,10 +7,7 @@ import { VSLSection } from '@/components/survey/vsl-section';
 import StickyBar from '@/components/StickyBar/StickyBar';
 import SurveyModal from '@/components/SurveyModal/SurveyModal';
 import { FooterLinks } from '@/components/polar/footer-links';
-import {
-  TRUST_STATS,
-  VIDALYTICS_EMBED_ID,
-} from '@/lib/config';
+import { TRUST_STATS, VIDALYTICS_EMBED_ID } from '@/lib/config';
 
 /* ── helpers ─────────────────────────────────────────── */
 function parseTrustStats(raw) {
@@ -22,110 +19,69 @@ function parseTrustStats(raw) {
   return raw.split('|').map(s => s.trim()).filter(Boolean);
 }
 
-const font = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-
 /* ── page ────────────────────────────────────────────── */
 function PageContent() {
   const stats = parseTrustStats(TRUST_STATS);
+  const trustItems = stats || [
+    { icon: '💰', label: 'No Fees' },
+    { icon: '🔧', label: 'No Repairs' },
+    { icon: '⚡', label: 'Close Fast' },
+  ];
 
   return (
-    <main style={{ background: '#f1f5f9', minHeight: '100vh' }}>
+    <main className="min-h-screen bg-gray-50/50">
       {/* Sticky bar (appears on scroll past survey card) */}
       <StickyBar triggerElementId="survey-card" />
 
-      {/* ── Hero ──────────────────────────────────── */}
-      <section style={{
-        padding: '52px 0 72px',
-        textAlign: 'center',
-        background: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)',
-      }}>
-        <div style={{ maxWidth: '960px', margin: '0 auto', padding: '0 20px' }}>
+      {/* ── Hero Section (matches DMV sell-your-house-fast layout) ── */}
+      <div className="mx-auto flex max-w-3xl flex-col items-center px-4 pb-16 pt-8 sm:px-6 lg:px-8">
 
-          {/* Headline */}
-          <h1 style={{
-            fontSize: 'clamp(28px, 5vw, 48px)',
-            fontWeight: 800,
-            lineHeight: 1.12,
-            color: '#0f172a',
-            marginBottom: '16px',
-            fontFamily: font,
-            letterSpacing: '-0.02em',
-          }}>
+        {/* Headline + subtitle */}
+        <div className="mb-6 text-center">
+          <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
             Sell Your House Fast For Cash
           </h1>
 
-          {/* Subheadline with accent */}
-          <p style={{
-            fontSize: 'clamp(18px, 3vw, 24px)',
-            fontWeight: 700,
-            color: '#0f172a',
-            lineHeight: 1.35,
-            marginBottom: '16px',
-            fontFamily: font,
-          }}>
-            No Fees. No Repairs.{' '}
-            <span style={{ color: 'var(--accent)' }}>Cash in 14 Days.</span>
+          <p className="mx-auto mb-4 max-w-xl text-base text-gray-600 sm:text-lg">
+            No hidden fees. No repairs. No agents. We buy your house
+            directly &mdash; any condition, any situation.
           </p>
 
-          {/* Description */}
-          <p style={{
-            fontSize: 'clamp(15px, 2vw, 17px)',
-            color: '#64748b',
-            maxWidth: '560px',
-            margin: '0 auto 32px',
-            lineHeight: 1.65,
-            fontFamily: font,
-          }}>
-            We handle the paperwork, the timeline, and the stress.
-            You pick the closing date and walk away with a check.
-          </p>
-
-          {/* Trust stats / benefits row */}
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '10px 24px',
-            marginBottom: '40px',
-          }}>
-            {(stats || ['No Fees or Commissions', 'No Repairs Needed', 'Cash Offer in 24 Hours']).map((label, i) => (
-              <div key={i} style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#475569',
-                fontFamily: font,
-              }}>
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                  <circle cx="10" cy="10" r="10" fill="var(--accent)" fillOpacity="0.15" />
-                  <path d="M6 10l3 3 5-5" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {typeof label === 'string' ? label : (label.label || label.value || String(label))}
-              </div>
-            ))}
+          {/* Trust indicator pills */}
+          <div className="mx-auto mb-6 flex max-w-lg flex-wrap items-center justify-center gap-3 sm:gap-4">
+            {trustItems.map((item, i) => {
+              const icon = typeof item === 'string' ? '✓' : item.icon;
+              const label = typeof item === 'string' ? item : item.label;
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700 sm:text-sm"
+                >
+                  <span className="text-base">{icon}</span>
+                  {label}
+                </div>
+              );
+            })}
           </div>
-
-          {/* ── Inline Survey Card ────────────────── */}
-          <div id="survey-card" style={{ maxWidth: '560px', margin: '0 auto' }}>
-            <SurveyCard />
-          </div>
-
-          {/* VSL section (only if configured) */}
-          {VIDALYTICS_EMBED_ID && (
-            <div style={{ maxWidth: '720px', margin: '48px auto 0' }}>
-              <VSLSection />
-            </div>
-          )}
         </div>
-      </section>
 
-      <div style={{ paddingBottom: '32px' }}>
-        <FooterLinks />
+        {/* VSL Video (only if Vidalytics is configured) */}
+        {VIDALYTICS_EMBED_ID && (
+          <div className="mb-8 w-full max-w-2xl">
+            <VSLSection />
+          </div>
+        )}
+
+        {/* Survey Entry Card */}
+        <div id="survey-card" className="w-full max-w-lg">
+          <SurveyCard />
+        </div>
       </div>
 
-      {/* Modal fallback for StickyBar */}
+      {/* Footer */}
+      <FooterLinks />
+
+      {/* Modal (opened by SurveyCard or StickyBar) */}
       <SurveyModal />
     </main>
   );
