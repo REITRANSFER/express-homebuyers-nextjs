@@ -9,6 +9,15 @@ import {
   LOCATION_BIAS_LNG,
 } from '@/lib/config';
 
+const BLOCKED_ADDRESSES = [
+  '9809 newhall rd',
+];
+
+function isBlockedAddress(formattedAddress) {
+  const lower = formattedAddress.toLowerCase();
+  return BLOCKED_ADDRESSES.some(blocked => lower.includes(blocked));
+}
+
 function isInServiceArea(place) {
   if (!SERVICE_AREAS || SERVICE_AREAS.length === 0) return true;
   if (!place || !place.address_components) return false;
@@ -76,6 +85,11 @@ export default function AddressInput({
     autocompleteRef.current.addListener('place_changed', () => {
       const place = autocompleteRef.current?.getPlace();
       if (place?.formatted_address) {
+        if (isBlockedAddress(place.formatted_address)) {
+          alert('Sorry, we are unable to provide an offer for this property at this time.');
+          if (onChange) onChange('');
+          return;
+        }
         if (SERVICE_AREAS.length > 0 && !isInServiceArea(place)) {
           alert(`Sorry, we currently only serve ${SERVICE_AREAS.join(', ')}. Please enter a property address in our service area.`);
           if (onChange) onChange('');
