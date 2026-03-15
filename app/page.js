@@ -23,9 +23,9 @@ function parseTrustStats(raw) {
 function PageContent() {
   const stats = parseTrustStats(TRUST_STATS);
   const trustItems = stats || [
-    { icon: '💰', label: 'No Fees' },
-    { icon: '🔧', label: 'No Repairs' },
-    { icon: '⚡', label: 'Close Fast' },
+    { icon: '✅', label: 'A+ BBB Rated Since 2003' },
+    { icon: '✅', label: '4,000+ Homes Purchased' },
+    { icon: '✅', label: 'Written Offer in 24 Hours' },
   ];
 
   return (
@@ -39,12 +39,13 @@ function PageContent() {
         {/* Headline + subtitle */}
         <div className="mb-6 text-center">
           <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            Sell Your House Fast For Cash
+            Our Cash Offer Won&apos;t Change After We See Your House.{' '}
+            <span style={{ color: 'var(--accent)' }}>Most Do.</span>
           </h1>
 
           <p className="mx-auto mb-4 max-w-xl text-base text-gray-600 sm:text-lg">
-            No hidden fees. No repairs. No agents. We buy your house
-            directly &mdash; any condition, any situation.
+            Answer 8 quick questions. Get a written, no-obligation cash offer within 24 hours.
+            No phone call required to start.
           </p>
 
           {/* Trust indicator pills */}

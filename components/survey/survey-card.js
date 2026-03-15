@@ -33,10 +33,10 @@ export function SurveyCard() {
       }}
     >
       <h3 className="mb-2 text-xl font-bold md:text-2xl">
-        Get Your Free Cash Offer Today
+        See What Your Home Is Actually Worth
       </h3>
       <p className="mb-4 text-sm text-white/80 md:text-base">
-        Enter your property address to get started — no obligation.
+        60 seconds. Written cash offer within 24 hours. The number won&apos;t change after we see your house.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -53,12 +53,12 @@ export function SurveyCard() {
           className="w-full rounded-lg bg-white px-6 py-3.5 text-base font-bold shadow-md transition hover:shadow-lg active:scale-[0.98]"
           style={{ color: 'var(--accent)' }}
         >
-          Get My Cash Offer &rarr;
+          See What My Home Is Worth &rarr;
         </button>
       </form>
 
       <p className="mt-4 text-xs text-white/60">
-        100% free &middot; No obligation &middot; Takes 60 seconds
+        100% free &middot; No obligation &middot; No phone call to start &middot; 4,000+ offers made since 2003
       </p>
     </div>
   );
