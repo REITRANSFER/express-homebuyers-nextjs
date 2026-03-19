@@ -17,8 +17,6 @@ export default function RootLayout({ children }) {
         <style>{`:root { --accent: ${ACCENT_COLOR}; }`}</style>
       </head>
       <body className="antialiased">
-        <FacebookPixel />
-
         {/* Header — white bg, centered phone (matches DMV landing layout) */}
         <header className="bg-white shadow-sm">
           <div className="mx-auto max-w-7xl px-4 py-3">
@@ -43,6 +41,7 @@ export default function RootLayout({ children }) {
         </header>
 
         {children}
+        <FacebookPixel />
       </body>
     </html>
   );

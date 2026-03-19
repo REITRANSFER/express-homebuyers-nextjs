@@ -1,14 +1,8 @@
-'use client';
-
-import { SurveyProvider } from '@/context/SurveyContext';
-import { pageConfigs } from '@/lib/surveyConfig';
-import { SurveyCard } from '@/components/survey/survey-card';
-import StickyBar from '@/components/StickyBar/StickyBar';
-import SurveyModal from '@/components/SurveyModal/SurveyModal';
+import SurveyPageClient from '@/components/survey/survey-page-client';
 import { FooterLinks } from '@/components/polar/footer-links';
 
-/* ── page ────────────────────────────────────────────── */
-function PageContent() {
+/* ── page (server component — static content SSR'd, no JS needed) ── */
+export default function SurveyPage() {
   const trustItems = [
     { icon: '✅', label: 'No Fees or Commissions' },
     { icon: '✅', label: 'Local Cash Buyers Based in DMV' },
@@ -17,13 +11,10 @@ function PageContent() {
 
   return (
     <main className="min-h-screen bg-gray-50/50">
-      {/* Sticky bar (appears on scroll past survey card) */}
-      <StickyBar triggerElementId="survey-card" />
-
       {/* ── Hero Section ── */}
       <div className="mx-auto flex max-w-3xl flex-col items-center px-4 pb-16 pt-8 sm:px-6 lg:px-8">
 
-        {/* Headline + subtitle */}
+        {/* Headline + subtitle (server-rendered, no JS hydration needed) */}
         <div className="mb-6 text-center">
           <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
             Need to Sell Your House Fast? Get a Fair Cash Offer in 24 Hours.{' '}
@@ -48,25 +39,12 @@ function PageContent() {
           </div>
         </div>
 
-        {/* Survey Entry Card */}
-        <div id="survey-card" className="w-full max-w-lg">
-          <SurveyCard />
-        </div>
+        {/* Interactive survey parts (client component) */}
+        <SurveyPageClient />
       </div>
 
       {/* Footer */}
       <FooterLinks />
-
-      {/* Modal (opened by SurveyCard or StickyBar) */}
-      <SurveyModal />
     </main>
-  );
-}
-
-export default function SurveyPage() {
-  return (
-    <SurveyProvider config={pageConfigs.home}>
-      <PageContent />
-    </SurveyProvider>
   );
 }
