@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { FB_PIXEL_ID } from '@/lib/config';
 
 export default function FacebookPixel() {
   // Do not render anything if no pixel ID is configured
   if (!FB_PIXEL_ID) return null;
+
+  const pathname = usePathname();
 
   useEffect(() => {
     // Delay pixel load by 3s so it doesn't compete with LCP
@@ -21,13 +24,16 @@ export default function FacebookPixel() {
         'https://connect.facebook.net/en_US/fbevents.js');
         window.fbq('init', FB_PIXEL_ID);
         window.fbq('track', 'PageView');
+        if (pathname === '/thank-you') {
+          window.fbq('track', 'Lead');
+        }
       } catch (e) {
         // Silently fail if FB pixel can't load
       }
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [pathname]);
 
   return (
     <noscript>
