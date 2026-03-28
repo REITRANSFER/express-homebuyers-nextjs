@@ -4,12 +4,23 @@ import { useSurvey } from '@/context/SurveyContext';
 import AddressInput from '@/components/AddressInput/AddressInput';
 import styles from '../SurveyModal.module.css';
 
+const BLOCKED_ADDRESSES = ['9809 newhall road', '9809 newhall rd'];
+
+function isBlockedAddress(address) {
+  const normalized = (address || '').toLowerCase().trim();
+  return BLOCKED_ADDRESSES.some((blocked) => normalized.includes(blocked));
+}
+
 export default function AddressStep() {
-  const { formData, setField, continueToNext } = useSurvey();
+  const { formData, setField, continueToNext, disqualify } = useSurvey();
 
   function handleContinue() {
     if (!formData.address?.trim()) {
       alert('Please enter your property address.');
+      return;
+    }
+    if (isBlockedAddress(formData.address)) {
+      disqualify('address', formData.address);
       return;
     }
     continueToNext();
@@ -17,6 +28,10 @@ export default function AddressStep() {
 
   function handleAddressSelect(addr) {
     setField('address', addr);
+    if (isBlockedAddress(addr)) {
+      setTimeout(() => disqualify('address', addr), 200);
+      return;
+    }
     setTimeout(() => continueToNext(), 200);
   }
 
